@@ -1,14 +1,28 @@
 import React from "react";
 import './signIn.css';
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 export default function SignIn(){
-    
-    function handleChange(){
-        
+    const [creds,setCreds]=React.useState({email:"",password:""});
+    function handleChange(event){
+        setCreds(prev=>({
+            ...prev,
+            [event.target.name]:event.target.value
+        }));
+        console.log(creds);
     }
     function handleLogin(){
-
+        axios({
+            method: 'post',
+            url:"http://localhost:4000/signin",
+            headers: {'Content-Type': 'application/json'}, 
+            withCredentials:true,
+            data: {
+                email:creds.email,
+                password:creds.password
+            }
+        }).then(response=>console.log(response.data));
     }
     function handleForgot(){
 

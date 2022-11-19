@@ -2,10 +2,12 @@ const express=require("express");
 const bodyParser=require("body-parser");
 const mongoose=require('mongoose');
 const cors=require('cors');
+const {encrypt,decrypt}= require('./crypto');
 const session=require('express-session');
 const cookieParser=require('cookie-parser');
 const MongoDBstore=require('connect-mongodb-session')(session);
-const dotenv = require('dotenv');   
+const dotenv = require('dotenv');
+const User=require('./userSchema');
 //IMPORTING PACKAGES^
 //<-----------------------START OF MIDDLEWARE------------------------------------>
 const app=express();
@@ -34,20 +36,82 @@ app.use(
 );
 //<------------------------END OF MIDDLEWARE------------------------------------->
 
-
+app.post('/signin',(req,res)=>{
+    var sessionInfo=req.session;
+    console.log("Backend Reached");
+    const {email,password}=req.body;
+    const query = User.findOne({'email': email });
+    query.select('password user_name email');
+    query.exec(function (err, user) {
+        if (user === null){
+            res.status(200).send("Invalid User!");
+        }
+        else
+        {
+            if(decrypt(user.password).localeCompare(password)===0){
+                sessionInfo.isLoggedIn=true;
+                sessionInfo.user_name=user.user_name;
+                sessionInfo.email=user.email;
+                res.status(200).send({user_name:req.session.user_name,isLoggedIn:req.session.isLoggedIn,status:"success"});
+            }
+            else{
+                res.status(200).send({isLoggedIn:req.session.isLoggedIn,status:"fail"});
+            }
+        }
+    });
+});
+app.post('/register',(req,res)=>{
+    const {email,password,user_name}=req.body;
+    const query = User.findOne({'email': email });
+    query.select('email');
+    query.exec(function (err, user) {
+        if(user===null){
+            const user=new User({
+                email: email,
+                password:encrypt(password),
+                user_name:user_name,
+            });
+            user.save().then(result=>{
+                res.send("Registration Successful!")
+                console.log("Created Entry");
+            }).catch(err=>{
+                console.log(err);
+                res.send("Internal Error");
+            });
+        }
+        else{
+            res.send("User Already Exists!");
+        }
+    }); 
+});
 app.post('/sendData',(req,res)=>{
     console.log("Endpoint 2 Working!!");
     console.log(req.body);
     res.send("O.K.");
+});
+app.post('/login',(req,res)=>{
+    console.log("/login");
+    if(req.session.isLoggedIn)
+        res.send({user_name:req.session.user_name,isLoggedIn:req.session.isLoggedIn});
+    else
+        res.send({isLoggedIn:false});
+});
+app.get('/logout',(req,res)=>{
+    console.log("/logout");
+    req.session.destroy(err=>{
+        if(err)
+            res.status(400).send("Internal Error");
+        else
+            res.status(200).send("LOGGED OUT!");
+    });
 });
 app.get('/',(req,res)=>{
     console.log("Endpoint 1 Working!!");
     res.send("O.K.");
 });
 
-
 mongoose.connect(`mongodb://localhost:27017/ecs?retryWrites=true&w=majority`).then(result=>{
-    app.listen(process.env.PORT,'192.168.137.180',()=>{
+    app.listen(process.env.PORT,'0.0.0.0',()=>{
         console.log(`Server is sucessfully running on port ${process.env.PORT} !`);
 });
 }).catch(console.log);
