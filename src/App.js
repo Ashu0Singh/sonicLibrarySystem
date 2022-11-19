@@ -4,11 +4,10 @@ import Dashboard from './dashBoard';
 import Home from './home';
 import SignIn from './signIn';
 import React from 'react';
-import { Routes, Route, Navigate,useNavigate } from "react-router-dom"
+import { Routes, Route, Navigate} from "react-router-dom"
 import axios from 'axios';
 function App() {
-  let navigate = useNavigate();
-  const [userDetails,setUserDetails]=React.useState("");
+  const [userDetails,setUserDetails]=React.useState({isLoggedIn:false});
   React.useEffect(()=>{axios({
       method: 'post',
       url:"http://localhost:4000/login",
@@ -18,7 +17,7 @@ function App() {
           setUserDetails(prev=>(response.data));
       });
     },[]);
-      console.log(userDetails);
+  console.log(userDetails);
   return (
     <div className='App'>
       <Routes>

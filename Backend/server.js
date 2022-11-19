@@ -28,8 +28,7 @@ app.use(
       resave: true,
       saveUninitialized: false,
       cookie: {
-        secure:false,
-        expires:1000*60*30
+        secure:false
     },
         store:store
     })
@@ -110,7 +109,7 @@ app.get('/',(req,res)=>{
     res.send("O.K.");
 });
 
-mongoose.connect(`mongodb://localhost:27017/ecs?retryWrites=true&w=majority`).then(result=>{
+mongoose.connect(`mongodb://localhost:27017/ecs`).then(result=>{
     app.listen(process.env.PORT,'0.0.0.0',()=>{
         console.log(`Server is sucessfully running on port ${process.env.PORT} !`);
 });
