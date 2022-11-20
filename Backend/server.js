@@ -8,6 +8,7 @@ const cookieParser=require('cookie-parser');
 const MongoDBstore=require('connect-mongodb-session')(session);
 const dotenv = require('dotenv');
 const User=require('./userSchema');
+const io = require('./socket');
 //IMPORTING PACKAGES^
 //<-----------------------START OF MIDDLEWARE------------------------------------>
 const app=express();
@@ -84,8 +85,9 @@ app.post('/register',(req,res)=>{
     }); 
 });
 app.post('/sendData',(req,res)=>{
-    console.log("Endpoint 2 Working!!");
-    console.log(req.body);
+    const data=req.body;
+    console.log(data);
+    io.getIO().emit('dataArduino',{data: data});
     res.send("O.K.");
 });
 app.post('/login',(req,res)=>{
@@ -110,7 +112,11 @@ app.get('/',(req,res)=>{
 });
 
 mongoose.connect(`mongodb://localhost:27017/ecs`).then(result=>{
-    app.listen(process.env.PORT,'0.0.0.0',()=>{
+    const server = app.listen(process.env.PORT,'192.168.137.220',()=>{
         console.log(`Server is sucessfully running on port ${process.env.PORT} !`);
-});
+    });
+    const io = require('./socket').init(server);
+    io.on('connection', socket=>{
+        console.log("Client Connected Successfully");
+    });
 }).catch(console.log);

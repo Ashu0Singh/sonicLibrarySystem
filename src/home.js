@@ -1,6 +1,7 @@
 import React from "react";
 import './home.css';
 import { Link } from "react-router-dom";
+//import { motion } from "framer-motion";
 export default function Home(){
     function handleClick(){
         
@@ -24,7 +25,7 @@ export default function Home(){
                     ABOUT US
                     </span>
                     <span>
-                    Sonic Library System is an initiative of a team of 6 people called “808” . 
+                    Sonic Library System is an initiative of a team of 6 people called “808”. 
                     808 is not just a team. they are frameworks to one another's strengths.
                     They believe in developing new and utility-complete projects.
                     </span>

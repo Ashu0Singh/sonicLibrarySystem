@@ -2,7 +2,21 @@ import React from "react";
 import Navbar from "./navBar";
 import './sector1.css';
 import { Link } from "react-router-dom";
+import clientSocket from 'socket.io-client';
 export default function Sector1(){
+    const [style,setStyle]=React.useState({backgroundColor:'rgba(20, 255, 0, 0.8)'});
+    React.useEffect(() => {
+        const socket=clientSocket('http://192.168.137.220:4000');
+        socket.on('dataArduino',response=>{
+            if(response.data.noiseLevel==="MID" && style.backgroundColor !=='rgba(255, 138, 0, 0.8)')
+                setStyle(prev=>({backgroundColor:'rgba(255, 138, 0, 0.8)'}));
+            else if(response.data.noiseLevel==="HIGH")
+                setStyle(prev=>({backgroundColor:'rgba(255, 49, 49, 0.8)'}));
+        });
+    }, []);
+    function handleClick(){
+        setStyle(prev=>({backgroundColor:'rgba(20, 255, 0, 0.8)'}));
+    }
     return(
         <div className="sector1Body">
             <Navbar/>
@@ -15,10 +29,10 @@ export default function Sector1(){
                 </div>
                 <div className="sectorSubBody">
                     <div className="sectorContainer" >
-                        <div className="sector1"><span>1</span>
+                        <div className="sector1" ><span>1</span>
                             <img src={process.env.PUBLIC_URL+"/images/tableIcon.png"} alt="tableIcon" />
                         </div>
-                        <div className="sector1"><span>2</span>
+                        <div className="sector1" style={style} onClick={handleClick} ><span>2</span>
                             <img src={process.env.PUBLIC_URL+"/images/tableIcon.png"} alt="tableIcon" />
                         </div>
                         <div className="sector1"><span>3</span>
