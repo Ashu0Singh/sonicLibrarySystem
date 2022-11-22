@@ -1,19 +1,20 @@
 import React from "react";
-import Navbar from "./navBar";
+import Navbar from "../Navbar/navBar";
 import './sector1.css';
 import { Link } from "react-router-dom";
 import clientSocket from 'socket.io-client';
+import { motion } from "framer-motion";
 export default function Sector1(){
     const [style,setStyle]=React.useState({backgroundColor:'rgba(20, 255, 0, 0.8)'});
     React.useEffect(() => {
-        const socket=clientSocket('http://192.168.137.220:4000');
+        const socket=clientSocket('http://172.18.177.29:4000');
         socket.on('dataArduino',response=>{
             if(response.data.noiseLevel==="MID" && style.backgroundColor !=='rgba(255, 138, 0, 0.8)')
                 setStyle(prev=>({backgroundColor:'rgba(255, 138, 0, 0.8)'}));
             else if(response.data.noiseLevel==="HIGH")
                 setStyle(prev=>({backgroundColor:'rgba(255, 49, 49, 0.8)'}));
         });
-    }, []);
+    });
     function handleClick(){
         setStyle(prev=>({backgroundColor:'rgba(20, 255, 0, 0.8)'}));
     }
@@ -21,14 +22,14 @@ export default function Sector1(){
         <div className="sector1Body">
             <Navbar/>
             <div className="sector1MainBody">
-                <div className="arrowTitle">
+                <motion.div className="arrowTitle" initial={{ y: '-20vh',opacity:0}} animate={{y:'0vh',opacity:1}} transition={{type:'spring', duration: 3, bounce:0.3}} >
                     <Link to="/dashboard">
                     <img src={process.env.PUBLIC_URL+"/images/backArrowIcon.png"} className="backArrowIcon" alt="logo"/>
                     </Link>
                     <span>Sector - 1</span>
-                </div>
+                </motion.div>
                 <div className="sectorSubBody">
-                    <div className="sectorContainer" >
+                    <motion.div className="sectorContainer" initial={{ y: '-20vh',opacity:0}} animate={{y:'0vh',opacity:1}} transition={{type:'spring', duration: 3, bounce:0.3}} >
                         <div className="sector1" ><span>1</span>
                             <img src={process.env.PUBLIC_URL+"/images/tableIcon.png"} alt="tableIcon" />
                         </div>
@@ -53,9 +54,9 @@ export default function Sector1(){
                         <div className="sector1"><span>8</span>
                             <img src={process.env.PUBLIC_URL+"/images/tableIcon.png"} alt="tableIcon" />
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
-                <div className="sectorFooter" >
+                <motion.div className="sectorFooter" initial={{ y: '+20vh',opacity:0}} animate={{y:'0vh',opacity:1}} transition={{type:'spring', duration: 3, bounce:0.3}} >
                     <div><span className="footerTitle" >Terminology</span></div>
                     <div className="footerBody" >
                         <div className="colorFoot">
@@ -71,7 +72,7 @@ export default function Sector1(){
                             <span>High and needs to be<br/>monitored</span>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </div>
     );

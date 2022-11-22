@@ -1,6 +1,6 @@
 .signInBody{
     background:linear-gradient(180deg,  #000000 -5%,rgba(74, 74, 74, 0) 100%),
-    url(./images/signInBg.jpg) no-repeat center fixed;
+    url(../images/signInBg.jpg) no-repeat center fixed;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -65,7 +65,7 @@
     height: 58px;
     border: 2px solid #000000;
     border-radius: 20px;
-    background: url("../public/images/mailIcon.png") no-repeat 95%, rgba(255, 255, 255, 0.75);
+    background: url("../../public/images/mailIcon.png") no-repeat 95%, rgba(255, 255, 255, 0.75);
     background-size: 2.2em;
 }
 .boxPass{
@@ -73,7 +73,7 @@
     height: 58px;
     border: 2px solid #000000;
     border-radius: 20px;
-    background: url("../public/images/passIcon.png") no-repeat 95%, rgba(255, 255, 255, 0.75);
+    background: url("../../public/images/passIcon.png") no-repeat 95%, rgba(255, 255, 255, 0.75);
     background-size: 2.2em;
 }
 ::placeholder {

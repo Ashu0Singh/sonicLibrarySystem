@@ -112,7 +112,7 @@ app.get('/',(req,res)=>{
 });
 
 mongoose.connect(`mongodb://localhost:27017/ecs`).then(result=>{
-    const server = app.listen(process.env.PORT,'192.168.137.220',()=>{
+    const server = app.listen(process.env.PORT,'172.18.177.29',()=>{
         console.log(`Server is sucessfully running on port ${process.env.PORT} !`);
     });
     const io = require('./socket').init(server);

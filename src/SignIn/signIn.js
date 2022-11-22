@@ -2,6 +2,7 @@ import React from "react";
 import './signIn.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { motion } from 'framer-motion';
 
 export default function SignIn(){
     const [creds,setCreds]=React.useState({email:"",password:""});
@@ -15,7 +16,7 @@ export default function SignIn(){
     function handleLogin(){
         axios({
             method: 'post',
-            url:"http://192.168.137.220:4000/signin",
+            url:"http://172.18.177.29:4000/signin",
             headers: {'Content-Type': 'application/json'}, 
             withCredentials:true,
             data: {
@@ -29,25 +30,25 @@ export default function SignIn(){
     }
     return(
         <div className="signInBody">
-            <div className="signHeader" >
+            <motion.div className="signHeader" initial={{ y: '-20vh',opacity:0}} animate={{y:'0vh',opacity:1}} transition={{type:'spring', duration: 3, bounce:0.3}} >
                 <span className="headerText">Sonic Library System</span>
                 <Link to="/">
                 <img className="homeIcon" src={process.env.PUBLIC_URL+"/images/homeIcon.png"} alt="icon"/>
                 </Link>
-            </div>
+            </motion.div>
             <div className="signContent" >
-                <div className="leftField">
+                <motion.div className="leftField" initial={{ x: '-100vw',opacity:0}} animate={{x:0,opacity:1}} transition={{type:'spring', duration: 2, bounce:0}} >
                     <span>WELCOME BACK USER,<br/>LOGIN</span>
-                </div>
+                </motion.div>
                 <img src={process.env.PUBLIC_URL+"/images/midLine.png"} alt="midLine"/>
-                <div className="rightField">
+                <motion.div className="rightField" initial={{ x: '+100vw',opacity:0}} animate={{x:0,opacity:1}} transition={{type:'spring', duration: 2, bounce:0}} >
                     <input type="text" onChange={handleChange} placeholder="Email/Username" name="email" className="boxEmail" />
                     <input type="password" onChange={handleChange} placeholder="Password" name="password" className="boxPass" />
                     <span className="forgotText" onClick={handleForgot} >Forgot Password?</span>
                     <Link to="/dashboard">
                     <button className="signInButton" onClick={handleLogin}>Login</button>
                     </Link>
-                </div>
+                </motion.div>
             </div>
         </div>
     );

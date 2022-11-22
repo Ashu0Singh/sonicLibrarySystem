@@ -1,5 +1,5 @@
 .homePage{
-    background: url(./images/homeBg.jpg) no-repeat center fixed;
+    background: url(../images/homeBg.jpg) no-repeat center fixed;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;

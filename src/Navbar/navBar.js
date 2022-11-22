@@ -1,6 +1,7 @@
 import React from "react";
 import './navBar.css';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 export default function Navbar(){
     const [dataVisi,setDataVisi]=React.useState("false");
     function handleClick(){
@@ -11,8 +12,9 @@ export default function Navbar(){
     }
     return(
         <div className="navBody">
-            <div className="navLeft" ><span>Sonic Library System</span></div>
-            <div className="navRight" >
+            <motion.div className="navLeft" initial={{ x: '-100vw',opacity:0}} animate={{x:'0vw',opacity:1}} transition={{type:'spring', duration: 1.5, bounce:0}}>
+                <span>Sonic Library System</span></motion.div>
+            <motion.div className="navRight" initial={{ x: '+100vw',opacity:0}} animate={{x:'0vw',opacity:1}} transition={{type:'spring', duration: 1.5, bounce:0}}>
                 <img src={process.env.PUBLIC_URL+"/images/userIcon.png"} alt="userIcon" />
                 <span>Administrator</span>
                 <img src={process.env.PUBLIC_URL+"/images/menuIcon.png"} onClick={handleClick} className="menuIcon" alt="menuIcon" />
@@ -28,7 +30,7 @@ export default function Navbar(){
                         <button className="navPaneButton">Logout</button>
                     </Link>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 }

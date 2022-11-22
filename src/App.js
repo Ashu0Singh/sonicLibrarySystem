@@ -1,8 +1,8 @@
 import './App.css';
-import Sector1 from './sector1';
-import Dashboard from './dashBoard';
-import Home from './home';
-import SignIn from './signIn';
+import Sector1 from './Sectors/sector1';
+import Dashboard from './Dashboard/dashBoard';
+import Home from './Home/home';
+import SignIn from './SignIn/signIn';
 import React from 'react';
 import { Routes, Route, Navigate} from "react-router-dom"
 import axios from 'axios';
@@ -10,7 +10,7 @@ function App() {
   const [userDetails,setUserDetails]=React.useState({isLoggedIn:false});
   React.useEffect(()=>{axios({
       method: 'post',
-      url:"http://192.168.137.220:4000/login",
+      url:"http://172.18.177.29:4000/login",
       headers: {'Content-Type': 'application/json'}, 
       withCredentials:true,
       }).then(response=>{
